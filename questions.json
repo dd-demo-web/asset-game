@@ -1,0 +1,131 @@
+{
+  "gameTitle": "Quest degli Asset",
+  "npcs": [
+    {
+      "id": "solution-architect",
+      "name": "Solution Architect",
+      "topic": "Cos'è un Asset e perché conta",
+      "position": { "col": 5, "row": 1 },
+      "style": { "outfit": "#4361ee", "skin": "#ffcf9e", "hair": "#2b2b2b", "accessory": "glasses" },
+      "questions": [
+        {
+          "id": "sa-q1",
+          "text": "Cosa si intende per 'asset tecnologico' nel nostro contesto aziendale?",
+          "answers": [
+            { "text": "Un progetto sviluppato una tantum e mai più riutilizzato", "correct": false },
+            { "text": "Una soluzione riutilizzabile (componente, modulo, template, accelerator) applicabile a più progetti e clienti", "correct": true },
+            { "text": "Solo l'hardware usato in azienda", "correct": false },
+            { "text": "Un documento contrattuale con il cliente", "correct": false }
+          ],
+          "points": 10
+        },
+        {
+          "id": "sa-q2",
+          "text": "Qual è uno dei principali vantaggi di sviluppare un asset invece di codice ad hoc per un singolo progetto?",
+          "answers": [
+            { "text": "Aumenta i tempi di sviluppo per ogni nuovo cliente", "correct": false },
+            { "text": "Riduce time-to-market e costi grazie al riutilizzo su più progetti", "correct": true },
+            { "text": "Rende il codice utilizzabile una sola volta", "correct": false },
+            { "text": "Elimina la necessità di testare il codice", "correct": false }
+          ],
+          "points": 15
+        },
+        {
+          "id": "sa-q3",
+          "text": "Perché è importante mantenere e documentare bene un asset nel tempo?",
+          "answers": [
+            { "text": "Per renderlo riutilizzabile, aggiornabile e facilmente proponibile a nuovi clienti", "correct": true },
+            { "text": "La documentazione non serve se il codice funziona", "correct": false },
+            { "text": "Solo per rispettare una formalità burocratica", "correct": false },
+            { "text": "Perché altrimenti il cliente non paga il progetto", "correct": false }
+          ],
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "business-developer",
+      "name": "Business Developer",
+      "topic": "Vantaggi commerciali degli Asset",
+      "position": { "col": 15, "row": 6 },
+      "style": { "outfit": "#e8590c", "skin": "#e8b48a", "hair": "#6c757d", "accessory": "tie" },
+      "questions": [
+        {
+          "id": "bd-q1",
+          "text": "In che modo un asset può generare valore commerciale per l'azienda?",
+          "answers": [
+            { "text": "Non genera alcun valore, è solo un costo interno", "correct": false },
+            { "text": "Può essere proposto e rivenduto a più clienti, generando ricavi ricorrenti", "correct": true },
+            { "text": "Va usato una sola volta e poi eliminato", "correct": false },
+            { "text": "Serve solo per uso interno del team tecnico", "correct": false }
+          ],
+          "points": 15
+        },
+        {
+          "id": "bd-q2",
+          "text": "Cosa succede quando un asset viene proposto a un nuovo cliente rispetto a sviluppare da zero?",
+          "answers": [
+            { "text": "Il cliente riceve una soluzione già collaudata, con minori rischi e costi di sviluppo", "correct": true },
+            { "text": "Il progetto diventa automaticamente più costoso", "correct": false },
+            { "text": "Non cambia nulla rispetto a partire da zero", "correct": false },
+            { "text": "Aumentano solo i tempi di delivery", "correct": false }
+          ],
+          "points": 15
+        },
+        {
+          "id": "bd-q3",
+          "text": "Quale beneficio strategico offre all'azienda avere un catalogo di asset consolidato?",
+          "answers": [
+            { "text": "Nessun beneficio, è solo un costo di manutenzione", "correct": false },
+            { "text": "Differenziazione competitiva, margini più alti e maggiore velocità nelle proposte commerciali", "correct": true },
+            { "text": "Rende l'azienda dipendente da un solo cliente", "correct": false },
+            { "text": "Riduce la qualità delle soluzioni offerte", "correct": false }
+          ],
+          "points": 10
+        }
+      ]
+    },
+    {
+      "id": "delivery-lead",
+      "name": "Delivery Lead",
+      "topic": "Applicare gli Asset su Web, Mobile, CRM, Salesforce e Adobe",
+      "position": { "col": 10, "row": 11 },
+      "style": { "outfit": "#2f9e44", "skin": "#d9a066", "hair": "#1a1a1a", "accessory": "cap" },
+      "questions": [
+        {
+          "id": "dl-q1",
+          "text": "Quali tipologie di prodotti/piattaforme possono beneficiare di asset riutilizzabili nella nostra azienda?",
+          "answers": [
+            { "text": "Solo i siti web statici", "correct": false },
+            { "text": "Prodotti web, mobile app, CRM, Salesforce, Adobe e soluzioni digitali in genere", "correct": true },
+            { "text": "Esclusivamente le app mobile", "correct": false },
+            { "text": "Nessuna, gli asset non si applicano a piattaforme diverse", "correct": false }
+          ],
+          "points": 10
+        },
+        {
+          "id": "dl-q2",
+          "text": "Qual è un esempio concreto di asset riutilizzabile in ambito Salesforce o Adobe?",
+          "answers": [
+            { "text": "Un componente/accelerator configurabile (es. modulo di integrazione, template di pagina) riusabile su più implementazioni", "correct": true },
+            { "text": "Una demo mostrata una sola volta al cliente e poi cancellata", "correct": false },
+            { "text": "Un file di configurazione valido per un solo ambiente specifico e non replicabile", "correct": false },
+            { "text": "Un contratto di licenza software", "correct": false }
+          ],
+          "points": 15
+        },
+        {
+          "id": "dl-q3",
+          "text": "Quale caratteristica rende un asset facilmente adattabile a clienti diversi?",
+          "answers": [
+            { "text": "Essere fortemente configurabile (parametri, opzioni) invece di scritto su misura per un solo cliente", "correct": true },
+            { "text": "Avere il nome del cliente scritto direttamente nel codice", "correct": false },
+            { "text": "Essere scritto senza commenti per essere più veloce da leggere", "correct": false },
+            { "text": "Funzionare solo con dati di test", "correct": false }
+          ],
+          "points": 15
+        }
+      ]
+    }
+  ]
+}
