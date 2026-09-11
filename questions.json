@@ -1,129 +1,795 @@
 {
   "gameTitle": "Quest degli Asset",
-  "npcs": [
+  "levels": [
     {
-      "id": "solution-architect",
-      "name": "Solution Architect",
-      "topic": "Cos'è un Asset e perché conta",
-      "position": { "col": 5, "row": 1 },
-      "style": { "outfit": "#4361ee", "skin": "#ffcf9e", "hair": "#2b2b2b", "accessory": "glasses" },
-      "questions": [
+      "level": 1,
+      "name": "Livello 1 - Fondamenta",
+      "npcs": [
         {
-          "id": "sa-q1",
-          "text": "Cosa si intende per 'asset tecnologico' nel nostro contesto aziendale?",
-          "answers": [
-            { "text": "Un progetto sviluppato una tantum e mai più riutilizzato", "correct": false },
-            { "text": "Una soluzione riutilizzabile (componente, modulo, template, accelerator) applicabile a più progetti e clienti", "correct": true },
-            { "text": "Solo l'hardware usato in azienda", "correct": false },
-            { "text": "Un documento contrattuale con il cliente", "correct": false }
-          ],
-          "points": 10
+          "id": "solution-architect",
+          "name": "Solution Architect",
+          "topic": "Cos'è un Asset e perché conta",
+          "position": {
+            "col": 5,
+            "row": 1
+          },
+          "style": {
+            "outfit": "#4361ee",
+            "skin": "#ffcf9e",
+            "hair": "#2b2b2b",
+            "accessory": "glasses"
+          },
+          "questions": [
+            {
+              "id": "sa-l1-q1",
+              "text": "Cosa si intende per 'asset tecnologico' nel nostro contesto aziendale?",
+              "answers": [
+                {
+                  "text": "Un progetto sviluppato una tantum e mai più riutilizzato",
+                  "correct": false
+                },
+                {
+                  "text": "Una soluzione riutilizzabile (componente, modulo, template, accelerator) applicabile a più progetti e clienti",
+                  "correct": true
+                },
+                {
+                  "text": "Solo l'hardware usato in azienda",
+                  "correct": false
+                },
+                {
+                  "text": "Un documento contrattuale con il cliente",
+                  "correct": false
+                }
+              ],
+              "points": 10
+            },
+            {
+              "id": "sa-l1-q2",
+              "text": "Qual è uno dei principali vantaggi di sviluppare un asset invece di codice ad hoc per un singolo progetto?",
+              "answers": [
+                {
+                  "text": "Aumenta i tempi di sviluppo per ogni nuovo cliente",
+                  "correct": false
+                },
+                {
+                  "text": "Riduce time-to-market e costi grazie al riutilizzo su più progetti",
+                  "correct": true
+                },
+                {
+                  "text": "Rende il codice utilizzabile una sola volta",
+                  "correct": false
+                },
+                {
+                  "text": "Elimina la necessità di testare il codice",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "sa-l1-q3",
+              "text": "Perché è importante mantenere e documentare bene un asset nel tempo?",
+              "answers": [
+                {
+                  "text": "Per renderlo riutilizzabile, aggiornabile e facilmente proponibile a nuovi clienti",
+                  "correct": true
+                },
+                {
+                  "text": "La documentazione non serve se il codice funziona",
+                  "correct": false
+                },
+                {
+                  "text": "Solo per rispettare una formalità burocratica",
+                  "correct": false
+                },
+                {
+                  "text": "Perché altrimenti il cliente non paga il progetto",
+                  "correct": false
+                }
+              ],
+              "points": 10
+            }
+          ]
         },
         {
-          "id": "sa-q2",
-          "text": "Qual è uno dei principali vantaggi di sviluppare un asset invece di codice ad hoc per un singolo progetto?",
-          "answers": [
-            { "text": "Aumenta i tempi di sviluppo per ogni nuovo cliente", "correct": false },
-            { "text": "Riduce time-to-market e costi grazie al riutilizzo su più progetti", "correct": true },
-            { "text": "Rende il codice utilizzabile una sola volta", "correct": false },
-            { "text": "Elimina la necessità di testare il codice", "correct": false }
-          ],
-          "points": 15
+          "id": "business-developer",
+          "name": "Business Developer",
+          "topic": "Vantaggi commerciali degli Asset",
+          "position": {
+            "col": 15,
+            "row": 6
+          },
+          "style": {
+            "outfit": "#e8590c",
+            "skin": "#e8b48a",
+            "hair": "#6c757d",
+            "accessory": "tie"
+          },
+          "questions": [
+            {
+              "id": "bd-l1-q1",
+              "text": "In che modo un asset può generare valore commerciale per l'azienda?",
+              "answers": [
+                {
+                  "text": "Non genera alcun valore, è solo un costo interno",
+                  "correct": false
+                },
+                {
+                  "text": "Può essere proposto e rivenduto a più clienti, generando ricavi ricorrenti",
+                  "correct": true
+                },
+                {
+                  "text": "Va usato una sola volta e poi eliminato",
+                  "correct": false
+                },
+                {
+                  "text": "Serve solo per uso interno del team tecnico",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "bd-l1-q2",
+              "text": "Cosa succede quando un asset viene proposto a un nuovo cliente rispetto a sviluppare da zero?",
+              "answers": [
+                {
+                  "text": "Il cliente riceve una soluzione già collaudata, con minori rischi e costi di sviluppo",
+                  "correct": true
+                },
+                {
+                  "text": "Il progetto diventa automaticamente più costoso",
+                  "correct": false
+                },
+                {
+                  "text": "Non cambia nulla rispetto a partire da zero",
+                  "correct": false
+                },
+                {
+                  "text": "Aumentano solo i tempi di delivery",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "bd-l1-q3",
+              "text": "Quale beneficio strategico offre all'azienda avere un catalogo di asset consolidato?",
+              "answers": [
+                {
+                  "text": "Nessun beneficio, è solo un costo di manutenzione",
+                  "correct": false
+                },
+                {
+                  "text": "Differenziazione competitiva, margini più alti e maggiore velocità nelle proposte commerciali",
+                  "correct": true
+                },
+                {
+                  "text": "Rende l'azienda dipendente da un solo cliente",
+                  "correct": false
+                },
+                {
+                  "text": "Riduce la qualità delle soluzioni offerte",
+                  "correct": false
+                }
+              ],
+              "points": 10
+            }
+          ]
         },
         {
-          "id": "sa-q3",
-          "text": "Perché è importante mantenere e documentare bene un asset nel tempo?",
-          "answers": [
-            { "text": "Per renderlo riutilizzabile, aggiornabile e facilmente proponibile a nuovi clienti", "correct": true },
-            { "text": "La documentazione non serve se il codice funziona", "correct": false },
-            { "text": "Solo per rispettare una formalità burocratica", "correct": false },
-            { "text": "Perché altrimenti il cliente non paga il progetto", "correct": false }
-          ],
-          "points": 10
+          "id": "delivery-lead",
+          "name": "Delivery Lead",
+          "topic": "Applicare gli Asset su Web, Mobile, CRM, Salesforce e Adobe",
+          "position": {
+            "col": 10,
+            "row": 11
+          },
+          "style": {
+            "outfit": "#2f9e44",
+            "skin": "#d9a066",
+            "hair": "#1a1a1a",
+            "accessory": "cap"
+          },
+          "questions": [
+            {
+              "id": "dl-l1-q1",
+              "text": "Quali tipologie di prodotti/piattaforme possono beneficiare di asset riutilizzabili nella nostra azienda?",
+              "answers": [
+                {
+                  "text": "Solo i siti web statici",
+                  "correct": false
+                },
+                {
+                  "text": "Prodotti web, mobile app, CRM, Salesforce, Adobe e soluzioni digitali in genere",
+                  "correct": true
+                },
+                {
+                  "text": "Esclusivamente le app mobile",
+                  "correct": false
+                },
+                {
+                  "text": "Nessuna, gli asset non si applicano a piattaforme diverse",
+                  "correct": false
+                }
+              ],
+              "points": 10
+            },
+            {
+              "id": "dl-l1-q2",
+              "text": "Qual è un esempio concreto di asset riutilizzabile in ambito Salesforce o Adobe?",
+              "answers": [
+                {
+                  "text": "Un componente/accelerator configurabile (es. modulo di integrazione, template di pagina) riusabile su più implementazioni",
+                  "correct": true
+                },
+                {
+                  "text": "Una demo mostrata una sola volta al cliente e poi cancellata",
+                  "correct": false
+                },
+                {
+                  "text": "Un file di configurazione valido per un solo ambiente specifico e non replicabile",
+                  "correct": false
+                },
+                {
+                  "text": "Un contratto di licenza software",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "dl-l1-q3",
+              "text": "Quale caratteristica rende un asset facilmente adattabile a clienti diversi?",
+              "answers": [
+                {
+                  "text": "Essere fortemente configurabile (parametri, opzioni) invece di scritto su misura per un solo cliente",
+                  "correct": true
+                },
+                {
+                  "text": "Avere il nome del cliente scritto direttamente nel codice",
+                  "correct": false
+                },
+                {
+                  "text": "Essere scritto senza commenti per essere più veloce da leggere",
+                  "correct": false
+                },
+                {
+                  "text": "Funzionare solo con dati di test",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            }
+          ]
         }
       ]
     },
     {
-      "id": "business-developer",
-      "name": "Business Developer",
-      "topic": "Vantaggi commerciali degli Asset",
-      "position": { "col": 15, "row": 6 },
-      "style": { "outfit": "#e8590c", "skin": "#e8b48a", "hair": "#6c757d", "accessory": "tie" },
-      "questions": [
+      "level": 2,
+      "name": "Livello 2 - Applicazione pratica",
+      "npcs": [
         {
-          "id": "bd-q1",
-          "text": "In che modo un asset può generare valore commerciale per l'azienda?",
-          "answers": [
-            { "text": "Non genera alcun valore, è solo un costo interno", "correct": false },
-            { "text": "Può essere proposto e rivenduto a più clienti, generando ricavi ricorrenti", "correct": true },
-            { "text": "Va usato una sola volta e poi eliminato", "correct": false },
-            { "text": "Serve solo per uso interno del team tecnico", "correct": false }
-          ],
-          "points": 15
+          "id": "solution-architect",
+          "name": "Solution Architect",
+          "topic": "Progettare Asset scalabili e configurabili",
+          "position": {
+            "col": 1,
+            "row": 2
+          },
+          "style": {
+            "outfit": "#4361ee",
+            "skin": "#ffcf9e",
+            "hair": "#2b2b2b",
+            "accessory": "glasses"
+          },
+          "questions": [
+            {
+              "id": "sa-l2-q1",
+              "text": "Cosa distingue un asset ben progettato da uno scritto ad hoc, in termini di architettura?",
+              "answers": [
+                {
+                  "text": "Essere fortemente accoppiato alla logica di un solo cliente",
+                  "correct": false
+                },
+                {
+                  "text": "Essere modulare, parametrizzabile e disaccoppiato da logiche specifiche di un singolo cliente",
+                  "correct": true
+                },
+                {
+                  "text": "Non avere alcun test automatico",
+                  "correct": false
+                },
+                {
+                  "text": "Essere scritto in un linguaggio qualsiasi, senza altre considerazioni",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "sa-l2-q2",
+              "text": "Quale pratica aiuta a garantire che un asset resti aggiornato e compatibile con nuove versioni di piattaforme come Salesforce o Adobe?",
+              "answers": [
+                {
+                  "text": "Versionamento semantico e pipeline di test automatizzati",
+                  "correct": true
+                },
+                {
+                  "text": "Non aggiornare mai il codice per evitare regressioni",
+                  "correct": false
+                },
+                {
+                  "text": "Copiare il codice per ogni cliente e aggiornarlo manualmente ovunque",
+                  "correct": false
+                },
+                {
+                  "text": "Eliminare la documentazione tecnica dopo il rilascio",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            },
+            {
+              "id": "sa-l2-q3",
+              "text": "Perché è importante definire interfacce chiare (API/contratti) quando si progetta un asset?",
+              "answers": [
+                {
+                  "text": "Per nascondere la logica interna e basta, senza altri benefici",
+                  "correct": false
+                },
+                {
+                  "text": "Per permettere l'integrazione con sistemi diversi senza dover modificare il core dell'asset",
+                  "correct": true
+                },
+                {
+                  "text": "Le interfacce non servono se il team è piccolo",
+                  "correct": false
+                },
+                {
+                  "text": "Solo per rispettare uno standard estetico del codice",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            }
+          ]
         },
         {
-          "id": "bd-q2",
-          "text": "Cosa succede quando un asset viene proposto a un nuovo cliente rispetto a sviluppare da zero?",
-          "answers": [
-            { "text": "Il cliente riceve una soluzione già collaudata, con minori rischi e costi di sviluppo", "correct": true },
-            { "text": "Il progetto diventa automaticamente più costoso", "correct": false },
-            { "text": "Non cambia nulla rispetto a partire da zero", "correct": false },
-            { "text": "Aumentano solo i tempi di delivery", "correct": false }
-          ],
-          "points": 15
+          "id": "business-developer",
+          "name": "Business Developer",
+          "topic": "Posizionare gli Asset nelle proposte commerciali",
+          "position": {
+            "col": 17,
+            "row": 2
+          },
+          "style": {
+            "outfit": "#e8590c",
+            "skin": "#e8b48a",
+            "hair": "#6c757d",
+            "accessory": "tie"
+          },
+          "questions": [
+            {
+              "id": "bd-l2-q1",
+              "text": "Come dovrebbe un Business Developer presentare un asset esistente durante una trattativa con un nuovo cliente?",
+              "answers": [
+                {
+                  "text": "Evitando di menzionarlo per non svalutare il progetto",
+                  "correct": false
+                },
+                {
+                  "text": "Come una soluzione già validata che riduce rischio, tempi e costo rispetto a uno sviluppo da zero",
+                  "correct": true
+                },
+                {
+                  "text": "Come un prodotto gratuito senza alcun valore",
+                  "correct": false
+                },
+                {
+                  "text": "Come qualcosa che il cliente deve modificare da solo",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "bd-l2-q2",
+              "text": "Quale elemento è fondamentale in un business case per la vendita di un asset?",
+              "answers": [
+                {
+                  "text": "Il colore del logo aziendale",
+                  "correct": false
+                },
+                {
+                  "text": "Il confronto costo/beneficio tra sviluppo custom e riuso dell'asset",
+                  "correct": true
+                },
+                {
+                  "text": "La lunghezza del contratto",
+                  "correct": false
+                },
+                {
+                  "text": "Il numero di sviluppatori assunti in azienda",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            },
+            {
+              "id": "bd-l2-q3",
+              "text": "Perché è utile mantenere un catalogo aggiornato degli asset disponibili per il team commerciale?",
+              "answers": [
+                {
+                  "text": "Per aumentare il numero di documenti interni senza un motivo preciso",
+                  "correct": false
+                },
+                {
+                  "text": "Per individuare rapidamente la soluzione più adatta a ogni opportunità commerciale",
+                  "correct": true
+                },
+                {
+                  "text": "Il catalogo non serve se si conoscono i progetti a memoria",
+                  "correct": false
+                },
+                {
+                  "text": "Serve solo per finalità legali",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            }
+          ]
         },
         {
-          "id": "bd-q3",
-          "text": "Quale beneficio strategico offre all'azienda avere un catalogo di asset consolidato?",
-          "answers": [
-            { "text": "Nessun beneficio, è solo un costo di manutenzione", "correct": false },
-            { "text": "Differenziazione competitiva, margini più alti e maggiore velocità nelle proposte commerciali", "correct": true },
-            { "text": "Rende l'azienda dipendente da un solo cliente", "correct": false },
-            { "text": "Riduce la qualità delle soluzioni offerte", "correct": false }
-          ],
-          "points": 10
+          "id": "delivery-lead",
+          "name": "Delivery Lead",
+          "topic": "Integrare gli Asset nei progetti multi-piattaforma",
+          "position": {
+            "col": 10,
+            "row": 9
+          },
+          "style": {
+            "outfit": "#2f9e44",
+            "skin": "#d9a066",
+            "hair": "#1a1a1a",
+            "accessory": "cap"
+          },
+          "questions": [
+            {
+              "id": "dl-l2-q1",
+              "text": "Cosa deve verificare un Delivery Lead prima di integrare un asset esistente in un nuovo progetto Salesforce/Adobe?",
+              "answers": [
+                {
+                  "text": "Solo se il colore del componente piace al cliente",
+                  "correct": false
+                },
+                {
+                  "text": "Compatibilità tecnica, configurabilità e requisiti specifici del progetto",
+                  "correct": true
+                },
+                {
+                  "text": "Se il team preferisce scrivere tutto da zero",
+                  "correct": false
+                },
+                {
+                  "text": "Nessuna verifica è necessaria",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            },
+            {
+              "id": "dl-l2-q2",
+              "text": "Quale beneficio in termini di timeline offre l'utilizzo di un asset già collaudato?",
+              "answers": [
+                {
+                  "text": "Allunga sempre i tempi di progetto",
+                  "correct": false
+                },
+                {
+                  "text": "Riduce i tempi di sviluppo e test, aiutando a rispettare le scadenze",
+                  "correct": true
+                },
+                {
+                  "text": "Non ha alcun impatto sui tempi di consegna",
+                  "correct": false
+                },
+                {
+                  "text": "Aumenta solo la complessità del progetto",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            },
+            {
+              "id": "dl-l2-q3",
+              "text": "Come gestire eventuali personalizzazioni richieste dal cliente su un asset standard?",
+              "answers": [
+                {
+                  "text": "Modificando direttamente il codice sorgente condiviso da tutti i clienti",
+                  "correct": false
+                },
+                {
+                  "text": "Attraverso configurazioni/estensioni previste dall'asset, senza comprometterne la riusabilità",
+                  "correct": true
+                },
+                {
+                  "text": "Rifiutando sempre ogni personalizzazione",
+                  "correct": false
+                },
+                {
+                  "text": "Duplicando l'asset per ogni cliente senza tracciarne le modifiche",
+                  "correct": false
+                }
+              ],
+              "points": 15
+            }
+          ]
         }
       ]
     },
     {
-      "id": "delivery-lead",
-      "name": "Delivery Lead",
-      "topic": "Applicare gli Asset su Web, Mobile, CRM, Salesforce e Adobe",
-      "position": { "col": 10, "row": 11 },
-      "style": { "outfit": "#2f9e44", "skin": "#d9a066", "hair": "#1a1a1a", "accessory": "cap" },
-      "questions": [
+      "level": 3,
+      "name": "Livello 3 - Governance ed Esperti",
+      "npcs": [
         {
-          "id": "dl-q1",
-          "text": "Quali tipologie di prodotti/piattaforme possono beneficiare di asset riutilizzabili nella nostra azienda?",
-          "answers": [
-            { "text": "Solo i siti web statici", "correct": false },
-            { "text": "Prodotti web, mobile app, CRM, Salesforce, Adobe e soluzioni digitali in genere", "correct": true },
-            { "text": "Esclusivamente le app mobile", "correct": false },
-            { "text": "Nessuna, gli asset non si applicano a piattaforme diverse", "correct": false }
-          ],
-          "points": 10
+          "id": "solution-architect",
+          "name": "Solution Architect",
+          "topic": "Governance architetturale e scalabilità degli Asset",
+          "position": {
+            "col": 5,
+            "row": 4
+          },
+          "style": {
+            "outfit": "#4361ee",
+            "skin": "#ffcf9e",
+            "hair": "#2b2b2b",
+            "accessory": "glasses"
+          },
+          "questions": [
+            {
+              "id": "sa-l3-q1",
+              "text": "In un programma di Asset maturo, chi dovrebbe validare che un nuovo asset rispetti gli standard architetturali prima di essere pubblicato nel catalogo?",
+              "answers": [
+                {
+                  "text": "Nessuno, basta il commit del developer",
+                  "correct": false
+                },
+                {
+                  "text": "Un board/review architetturale che verifica qualità, sicurezza e riusabilità",
+                  "correct": true
+                },
+                {
+                  "text": "Solo il cliente finale",
+                  "correct": false
+                },
+                {
+                  "text": "Il reparto marketing",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            },
+            {
+              "id": "sa-l3-q2",
+              "text": "Quale rischio comporta non gestire correttamente il versionamento di un asset condiviso da più progetti?",
+              "answers": [
+                {
+                  "text": "Nessun rischio, i progetti sono completamente indipendenti",
+                  "correct": false
+                },
+                {
+                  "text": "Breaking changes che impattano contemporaneamente più clienti in produzione",
+                  "correct": true
+                },
+                {
+                  "text": "Il codice diventa automaticamente più sicuro",
+                  "correct": false
+                },
+                {
+                  "text": "Il rischio di sicurezza scompare del tutto",
+                  "correct": false
+                }
+              ],
+              "points": 25
+            },
+            {
+              "id": "sa-l3-q3",
+              "text": "Come si misura in modo efficace il successo di un asset nel tempo?",
+              "answers": [
+                {
+                  "text": "Solo dal numero di righe di codice scritte",
+                  "correct": false
+                },
+                {
+                  "text": "Tramite metriche di riuso, ROI generato, numero di clienti serviti e riduzione del time-to-market",
+                  "correct": true
+                },
+                {
+                  "text": "Non si misura, è puramente soggettivo",
+                  "correct": false
+                },
+                {
+                  "text": "Dalla popolarità del nome dell'asset",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            }
+          ]
         },
         {
-          "id": "dl-q2",
-          "text": "Qual è un esempio concreto di asset riutilizzabile in ambito Salesforce o Adobe?",
-          "answers": [
-            { "text": "Un componente/accelerator configurabile (es. modulo di integrazione, template di pagina) riusabile su più implementazioni", "correct": true },
-            { "text": "Una demo mostrata una sola volta al cliente e poi cancellata", "correct": false },
-            { "text": "Un file di configurazione valido per un solo ambiente specifico e non replicabile", "correct": false },
-            { "text": "Un contratto di licenza software", "correct": false }
-          ],
-          "points": 15
+          "id": "business-developer",
+          "name": "Business Developer",
+          "topic": "Strategia commerciale e crescita del portafoglio Asset",
+          "position": {
+            "col": 17,
+            "row": 4
+          },
+          "style": {
+            "outfit": "#e8590c",
+            "skin": "#e8b48a",
+            "hair": "#6c757d",
+            "accessory": "tie"
+          },
+          "questions": [
+            {
+              "id": "bd-l3-q1",
+              "text": "Quale KPI è più rilevante per valutare l'impatto commerciale di un asset nel lungo periodo?",
+              "answers": [
+                {
+                  "text": "Il numero di email inviate al cliente",
+                  "correct": false
+                },
+                {
+                  "text": "Il tasso di riutilizzo su nuove opportunità e il revenue generato nel tempo",
+                  "correct": true
+                },
+                {
+                  "text": "Il numero di slide della presentazione commerciale",
+                  "correct": false
+                },
+                {
+                  "text": "La quantità di codice sorgente prodotto",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            },
+            {
+              "id": "bd-l3-q2",
+              "text": "Come può un asset contribuire a costruire un vantaggio competitivo duraturo per l'azienda?",
+              "answers": [
+                {
+                  "text": "Rendendo l'azienda in grado di offrire rapidamente soluzioni consolidate e configurabili",
+                  "correct": true
+                },
+                {
+                  "text": "Copiando le soluzioni dei competitor senza adattarle",
+                  "correct": false
+                },
+                {
+                  "text": "Nascondendo l'esistenza dell'asset ai clienti",
+                  "correct": false
+                },
+                {
+                  "text": "Aumentando il prezzo senza alcuna motivazione",
+                  "correct": false
+                }
+              ],
+              "points": 25
+            },
+            {
+              "id": "bd-l3-q3",
+              "text": "Quale rischio commerciale si corre se un asset non viene mantenuto e aggiornato?",
+              "answers": [
+                {
+                  "text": "Nessuno, i clienti non se ne accorgono mai",
+                  "correct": false
+                },
+                {
+                  "text": "Perdita di competitività e di fiducia dei clienti per obsolescenza tecnica",
+                  "correct": true
+                },
+                {
+                  "text": "Il prezzo di vendita aumenta automaticamente",
+                  "correct": false
+                },
+                {
+                  "text": "L'azienda guadagna comunque di più",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            }
+          ]
         },
         {
-          "id": "dl-q3",
-          "text": "Quale caratteristica rende un asset facilmente adattabile a clienti diversi?",
-          "answers": [
-            { "text": "Essere fortemente configurabile (parametri, opzioni) invece di scritto su misura per un solo cliente", "correct": true },
-            { "text": "Avere il nome del cliente scritto direttamente nel codice", "correct": false },
-            { "text": "Essere scritto senza commenti per essere più veloce da leggere", "correct": false },
-            { "text": "Funzionare solo con dati di test", "correct": false }
-          ],
-          "points": 15
+          "id": "delivery-lead",
+          "name": "Delivery Lead",
+          "topic": "Delivery avanzata: scaling multi-cliente e multi-piattaforma",
+          "position": {
+            "col": 10,
+            "row": 11
+          },
+          "style": {
+            "outfit": "#2f9e44",
+            "skin": "#d9a066",
+            "hair": "#1a1a1a",
+            "accessory": "cap"
+          },
+          "questions": [
+            {
+              "id": "dl-l3-q1",
+              "text": "In un contesto con più clienti che usano lo stesso asset su piattaforme diverse (Web, Mobile, Salesforce, Adobe), qual è la sfida principale per il Delivery Lead?",
+              "answers": [
+                {
+                  "text": "Nessuna sfida particolare, tutto procede da solo",
+                  "correct": false
+                },
+                {
+                  "text": "Coordinare aggiornamenti e versioni dell'asset senza introdurre regressioni sui singoli clienti",
+                  "correct": true
+                },
+                {
+                  "text": "Ridurre il numero di piattaforme supportate a una sola",
+                  "correct": false
+                },
+                {
+                  "text": "Ignorare le differenze tra le piattaforme",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            },
+            {
+              "id": "dl-l3-q2",
+              "text": "Quale pratica aiuta a garantire delivery di qualità quando un asset viene riusato su larga scala?",
+              "answers": [
+                {
+                  "text": "Test automatizzati e ambienti di staging dedicati per validare ogni nuova implementazione",
+                  "correct": true
+                },
+                {
+                  "text": "Saltare i test per consegnare più velocemente",
+                  "correct": false
+                },
+                {
+                  "text": "Testare solo manualmente e una tantum",
+                  "correct": false
+                },
+                {
+                  "text": "Non documentare le configurazioni specifiche del cliente",
+                  "correct": false
+                }
+              ],
+              "points": 25
+            },
+            {
+              "id": "dl-l3-q3",
+              "text": "Come si bilancia la standardizzazione dell'asset con le esigenze specifiche di ogni cliente in fase di delivery?",
+              "answers": [
+                {
+                  "text": "Standardizzando tutto senza eccezioni, ignorando i clienti",
+                  "correct": false
+                },
+                {
+                  "text": "Definendo un core stabile e punti di estensione configurabili per adattarsi ai contesti specifici",
+                  "correct": true
+                },
+                {
+                  "text": "Creando un asset completamente diverso per ogni cliente da zero",
+                  "correct": false
+                },
+                {
+                  "text": "Lasciando che ogni sviluppatore decida senza alcuna linea guida",
+                  "correct": false
+                }
+              ],
+              "points": 20
+            }
+          ]
         }
       ]
     }

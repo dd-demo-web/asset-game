@@ -12,6 +12,7 @@
     <h1 id="title">Asset Quiz</h1>
     <div id="hud">
       <span id="score-display">Punteggio: 0</span>
+      <span id="level-display">Livello 1/3</span>
       <span id="topic-display"></span>
     </div>
     <canvas id="game" width="800" height="500"></canvas>
@@ -25,6 +26,15 @@
       <p id="question-text"></p>
       <div id="answers"></div>
       <p id="feedback"></p>
+    </div>
+  </div>
+
+  <!-- Level complete modal -->
+  <div id="level-modal" class="hidden">
+    <div id="level-box">
+      <h2>Livello completato!</h2>
+      <p id="level-complete-text"></p>
+      <button id="next-level-btn">Livello successivo</button>
     </div>
   </div>
 

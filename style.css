@@ -38,6 +38,10 @@ body {
   color: #a5d8ff;
 }
 
+#level-display {
+  color: #63e6be;
+}
+
 canvas {
   background: #d9d4c8;
   display: block;
@@ -56,7 +60,7 @@ canvas {
   display: none !important;
 }
 
-#quiz-modal, #end-modal {
+#quiz-modal, #end-modal, #level-modal {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.7);
@@ -66,7 +70,7 @@ canvas {
   z-index: 10;
 }
 
-#quiz-box, #end-box {
+#quiz-box, #end-box, #level-box {
   background: #232a33;
   border: 2px solid #4dabf7;
   border-radius: 12px;
@@ -133,6 +137,31 @@ canvas {
 
 #end-box {
   text-align: center;
+}
+
+#level-box {
+  text-align: center;
+}
+
+#level-box h2 {
+  color: #63e6be;
+  margin-top: 0;
+}
+
+#next-level-btn {
+  margin-top: 16px;
+  background: #63e6be;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #12161c;
+}
+
+#next-level-btn:hover {
+  background: #96f2d7;
 }
 
 #restart-btn {

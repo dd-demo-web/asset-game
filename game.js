@@ -7,84 +7,149 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
 const TILE = 40;
-const COLS = canvas.width / TILE;
-const ROWS = canvas.height / TILE;
 
 // Mappa: 0 = pavimento libero, 1 = parete (corridoio ufficio), 2 = scrivania
 // (ostacolo decorativo), 3 = armadio da ufficio (ostacolo decorativo)
 // (righe x colonne) - 20 colonne x 12.5 righe circa, adattata a 800x500
-const mapLayout = [
-  "11111111111111111111",
-  "10000000000000000001",
-  "10033000000000220001",
-  "10000001111000000001",
-  "10000001000000300001",
-  "10022001000330000001",
-  "10000000000000000001",
-  "10000110000011000001",
-  "10003000000000200001",
-  "10000000110000000001",
-  "10033000000000022001",
-  "10000000000000000001",
-  "11111111111111111111"
+// Ogni livello ha una propria pianta d'ufficio (open space, sala riunioni,
+// piano dirigenziale) per differenziare l'ambientazione man mano che si avanza.
+const mapLayouts = [
+  // Livello 1: open space
+  [
+    "11111111111111111111",
+    "10000000000000000001",
+    "10033000000000220001",
+    "10000001111000000001",
+    "10000001000000300001",
+    "10022001000330000001",
+    "10000000000000000001",
+    "10000110000011000001",
+    "10003000000000200001",
+    "10000000110000000001",
+    "10033000000000022001",
+    "10000000000000000001",
+    "11111111111111111111"
+  ],
+  // Livello 2: sala riunioni con uffici separati
+  [
+    "11111111111111111111",
+    "10000011000110000001",
+    "10022011000110022001",
+    "10000000000000000001",
+    "11101111011110111011",
+    "10000000000000000001",
+    "10033000000000330001",
+    "10000000000000000001",
+    "11011110111011101101",
+    "10000000000000000001",
+    "10022000000000022001",
+    "10000000000000000001",
+    "11111111111111111111"
+  ],
+  // Livello 3: piano dirigenziale con uffici privati
+  [
+    "11111111111111111111",
+    "10000000000000000001",
+    "10330011111100330001",
+    "10000010000010000001",
+    "10022010220010022001",
+    "10000010000010000001",
+    "10000011000110000001",
+    "10000010000010000001",
+    "10033010330010033001",
+    "10000010000010000001",
+    "10000011111100000001",
+    "10000000000000000001",
+    "11111111111111111111"
+  ]
 ];
 
+// Palette colori per livello: open space chiaro, sala riunioni sui toni blu,
+// piano dirigenziale scuro/elegante con dettagli oro.
+const officeThemes = [
+  {
+    floorA: '#d9d4c8', floorB: '#cfc9bb',
+    wallFill: '#b8bdc2', wallTop: '#e9ebee', wallStroke: '#8a9096',
+    deskBase: '#8a5a35', deskTop: '#a9713f', deskLeg: '#5c3b21',
+    monitorFrame: '#2b2b2b', monitorScreen: '#4dabf7',
+    cabinetFill: '#6b7280', cabinetStroke: '#454b54', drawerFill: '#9aa1ab', drawerHandle: '#454b54'
+  },
+  {
+    floorA: '#c9d6e3', floorB: '#b8c8d8',
+    wallFill: '#5f7d9e', wallTop: '#d7e3ee', wallStroke: '#3d566f',
+    deskBase: '#3b4a5c', deskTop: '#54687f', deskLeg: '#26313d',
+    monitorFrame: '#1c1f24', monitorScreen: '#74c0fc',
+    cabinetFill: '#3b4552', cabinetStroke: '#25292f', drawerFill: '#5a6472', drawerHandle: '#25292f'
+  },
+  {
+    floorA: '#5c4630', floorB: '#4f3c28',
+    wallFill: '#3a2b1d', wallTop: '#6b4a30', wallStroke: '#caa15a',
+    deskBase: '#4a2f1a', deskTop: '#6b4426', deskLeg: '#2c1c0f',
+    monitorFrame: '#1a1a1a', monitorScreen: '#caa15a',
+    cabinetFill: '#2c231a', cabinetStroke: '#caa15a', drawerFill: '#453626', drawerHandle: '#caa15a'
+  }
+];
+
+let currentMapLayout = mapLayouts[0];
+let currentTheme = officeThemes[0];
+
 function isBlocked(col, row) {
-  if (row < 0 || row >= mapLayout.length) return true;
-  const rowStr = mapLayout[row];
+  if (row < 0 || row >= currentMapLayout.length) return true;
+  const rowStr = currentMapLayout[row];
   if (col < 0 || col >= rowStr.length) return true;
   const c = rowStr[col];
   return c === '1' || c === '2' || c === '3';
 }
 
 function drawMap() {
-  for (let row = 0; row < mapLayout.length; row++) {
-    for (let col = 0; col < mapLayout[row].length; col++) {
-      const tile = mapLayout[row][col];
+  const theme = currentTheme;
+  for (let row = 0; row < currentMapLayout.length; row++) {
+    for (let col = 0; col < currentMapLayout[row].length; col++) {
+      const tile = currentMapLayout[row][col];
       const x = col * TILE;
       const y = row * TILE;
 
       // pavimento dell'ufficio (piastrelle chiare) sotto ogni elemento
-      ctx.fillStyle = (row + col) % 2 === 0 ? '#d9d4c8' : '#cfc9bb';
+      ctx.fillStyle = (row + col) % 2 === 0 ? theme.floorA : theme.floorB;
       ctx.fillRect(x, y, TILE, TILE);
       ctx.strokeStyle = 'rgba(0,0,0,0.06)';
       ctx.strokeRect(x, y, TILE, TILE);
 
       if (tile === '1') {
         // parete/corridoio ufficio
-        ctx.fillStyle = '#b8bdc2';
+        ctx.fillStyle = theme.wallFill;
         ctx.fillRect(x, y, TILE, TILE);
-        ctx.fillStyle = '#e9ebee';
+        ctx.fillStyle = theme.wallTop;
         ctx.fillRect(x, y, TILE, TILE / 4);
-        ctx.strokeStyle = '#8a9096';
+        ctx.strokeStyle = theme.wallStroke;
         ctx.strokeRect(x, y, TILE, TILE);
       } else if (tile === '2') {
         // scrivania da ufficio
-        ctx.fillStyle = '#8a5a35';
+        ctx.fillStyle = theme.deskBase;
         ctx.fillRect(x + 3, y + TILE / 2 - 4, TILE - 6, TILE / 2 - 4);
-        ctx.fillStyle = '#a9713f';
+        ctx.fillStyle = theme.deskTop;
         ctx.fillRect(x + 3, y + TILE / 2 - 8, TILE - 6, 6);
         // gambe scrivania
-        ctx.fillStyle = '#5c3b21';
+        ctx.fillStyle = theme.deskLeg;
         ctx.fillRect(x + 5, y + TILE - 6, 4, 6);
         ctx.fillRect(x + TILE - 9, y + TILE - 6, 4, 6);
         // monitor
-        ctx.fillStyle = '#2b2b2b';
+        ctx.fillStyle = theme.monitorFrame;
         ctx.fillRect(x + TILE / 2 - 7, y + TILE / 2 - 20, 14, 10);
-        ctx.fillStyle = '#4dabf7';
+        ctx.fillStyle = theme.monitorScreen;
         ctx.fillRect(x + TILE / 2 - 5, y + TILE / 2 - 18, 10, 6);
       } else if (tile === '3') {
         // armadio da ufficio (cassettiera/schedario)
-        ctx.fillStyle = '#6b7280';
+        ctx.fillStyle = theme.cabinetFill;
         ctx.fillRect(x + 4, y + 2, TILE - 8, TILE - 6);
-        ctx.strokeStyle = '#454b54';
+        ctx.strokeStyle = theme.cabinetStroke;
         ctx.strokeRect(x + 4, y + 2, TILE - 8, TILE - 6);
         // cassetti
         for (let i = 0; i < 3; i++) {
           const drawerY = y + 6 + i * ((TILE - 12) / 3);
-          ctx.fillStyle = '#9aa1ab';
+          ctx.fillStyle = theme.drawerFill;
           ctx.fillRect(x + 7, drawerY, TILE - 14, (TILE - 12) / 3 - 3);
-          ctx.fillStyle = '#454b54';
+          ctx.fillStyle = theme.drawerHandle;
           ctx.fillRect(x + TILE / 2 - 5, drawerY + ((TILE - 12) / 3 - 3) / 2 - 1, 10, 2);
         }
       }
@@ -298,6 +363,7 @@ function drawPrompt() {
 
 // ---------------- Quiz logic ----------------
 let quizData = null;
+let currentLevelIndex = 0;
 let currentNpc = null;
 let currentQuestion = null;
 let score = 0;
@@ -310,15 +376,18 @@ const answersEl = document.getElementById('answers');
 const feedbackEl = document.getElementById('feedback');
 const scoreDisplay = document.getElementById('score-display');
 const topicDisplay = document.getElementById('topic-display');
+const levelDisplay = document.getElementById('level-display');
 const endModal = document.getElementById('end-modal');
 const finalScoreEl = document.getElementById('final-score');
 const restartBtn = document.getElementById('restart-btn');
+const levelModal = document.getElementById('level-modal');
+const levelCompleteTextEl = document.getElementById('level-complete-text');
+const nextLevelBtn = document.getElementById('next-level-btn');
 
-async function loadQuizData() {
-  const res = await fetch('questions.json');
-  quizData = await res.json();
-
-  npcs = quizData.npcs.map((cfg) => {
+// Costruisce l'elenco degli NPC (e delle relative domande) a partire dai
+// dati configurati per un determinato livello in questions.json.
+function buildNpcsForLevel(levelCfg) {
+  return levelCfg.npcs.map((cfg) => {
     const style = cfg.style || {};
     const inst = {
       id: cfg.id,
@@ -342,12 +411,38 @@ async function loadQuizData() {
     inst.questionQueue = [...cfg.questions];
     return inst;
   });
+}
 
+function updateHud() {
+  const levelCfg = quizData.levels[currentLevelIndex];
+  levelDisplay.textContent = `Livello ${currentLevelIndex + 1}/${quizData.levels.length} · ${levelCfg.name.replace(/^Livello \d+ - /, '')}`;
   topicDisplay.textContent = `Personaggi: ${npcs.map((n) => n.name).join(' · ')}`;
+}
+
+function loadLevel(levelIndex) {
+  currentLevelIndex = levelIndex;
+  currentMapLayout = mapLayouts[levelIndex];
+  currentTheme = officeThemes[levelIndex];
+  npcs = buildNpcsForLevel(quizData.levels[currentLevelIndex]);
+  player.col = 1;
+  player.row = 1;
+  player.x = TILE * 1;
+  player.y = TILE * 1;
+  updateHud();
+}
+
+async function loadQuizData() {
+  const res = await fetch('questions.json');
+  quizData = await res.json();
+  loadLevel(0);
 }
 
 function allNpcsCompleted() {
   return npcs.every((n) => n.answeredIds.size === n.questions.length);
+}
+
+function isLastLevel() {
+  return currentLevelIndex === quizData.levels.length - 1;
 }
 
 function tryInteract() {
@@ -356,7 +451,7 @@ function tryInteract() {
   if (!target) return;
 
   if (target.questionQueue.length === 0) {
-    if (allNpcsCompleted()) showEndModal();
+    if (allNpcsCompleted()) onLevelFinished();
     return;
   }
   openQuestion(target);
@@ -412,7 +507,7 @@ function handleAnswer(btn, answer) {
     currentQuestion = null;
     currentNpc = null;
     if (allNpcsCompleted()) {
-      setTimeout(showEndModal, 300);
+      setTimeout(onLevelFinished, 300);
     }
   }, 1400);
 }
@@ -421,23 +516,49 @@ function updateScoreDisplay() {
   scoreDisplay.textContent = `Punteggio: ${score}`;
 }
 
+// Chiamata quando tutti gli NPC del livello corrente hanno esaurito le
+// domande: passa al livello successivo oppure mostra il riepilogo finale.
+function onLevelFinished() {
+  if (isLastLevel()) {
+    showEndModal();
+  } else {
+    showLevelCompleteModal();
+  }
+}
+
+function showLevelCompleteModal() {
+  const levelCfg = quizData.levels[currentLevelIndex];
+  const nextCfg = quizData.levels[currentLevelIndex + 1];
+  levelCompleteTextEl.textContent =
+    `Hai completato "${levelCfg.name}"! Punteggio attuale: ${score}. ` +
+    `Prossima tappa: "${nextCfg.name}", con domande più difficili.`;
+  levelModal.classList.remove('hidden');
+}
+
 function showEndModal() {
-  const maxScore = npcs.reduce(
-    (sum, n) => sum + n.questions.reduce((s, q) => s + (q.points || 0), 0),
+  const maxScore = quizData.levels.reduce(
+    (levelSum, lvl) =>
+      levelSum +
+      lvl.npcs.reduce(
+        (sum, n) => sum + n.questions.reduce((s, q) => s + (q.points || 0), 0),
+        0
+      ),
     0
   );
   finalScoreEl.textContent = `Hai totalizzato ${score} su ${maxScore} punti possibili.`;
   endModal.classList.remove('hidden');
 }
 
+nextLevelBtn.addEventListener('click', () => {
+  levelModal.classList.add('hidden');
+  loadLevel(currentLevelIndex + 1);
+});
+
 restartBtn.addEventListener('click', () => {
   score = 0;
   updateScoreDisplay();
-  npcs.forEach((n) => {
-    n.questionQueue = [...n.questions];
-    n.answeredIds = new Set();
-  });
   endModal.classList.add('hidden');
+  loadLevel(0);
 });
 
 // ---------------- Game loop ----------------
