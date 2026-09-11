@@ -602,7 +602,19 @@ function loadLevel(levelIndex) {
 async function loadQuizData() {
   const res = await fetch('questions.json');
   quizData = await res.json();
-  loadLevel(0);
+  loadLevel(getStartLevelFromQueryParam());
+}
+
+// Permette di saltare direttamente a un livello tramite query param, es.
+// ?level=2 apre il Livello 2 (numerazione a partire da 1, come mostrato in HUD).
+function getStartLevelFromQueryParam() {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get('level');
+  if (!raw) return 0;
+  const n = parseInt(raw, 10);
+  if (Number.isNaN(n)) return 0;
+  const maxIndex = quizData.levels.length - 1;
+  return Math.min(Math.max(n - 1, 0), maxIndex);
 }
 
 function allNpcsCompleted() {
