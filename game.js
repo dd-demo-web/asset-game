@@ -6,6 +6,37 @@
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
+// ---------------- Password gate ----------------
+// Blocca l'accesso al gioco finché non viene inserita la password corretta.
+// La password non è un sistema di sicurezza reale (il codice è pubblico lato
+// client), serve solo a limitare l'accesso casuale al link del gioco.
+const SITE_PASSWORD = 'asset-game-2026';
+const AUTH_STORAGE_KEY = 'asset-game-authenticated';
+const passwordModal = document.getElementById('password-modal');
+const passwordForm = document.getElementById('password-form');
+const passwordInput = document.getElementById('password-input');
+const passwordError = document.getElementById('password-error');
+const gameContainer = document.getElementById('game-container');
+
+function unlockGame() {
+  sessionStorage.setItem(AUTH_STORAGE_KEY, '1');
+  passwordModal.classList.add('hidden');
+  gameContainer.classList.remove('hidden');
+  startGame();
+}
+
+passwordForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (passwordInput.value === SITE_PASSWORD) {
+    passwordError.classList.add('hidden');
+    unlockGame();
+  } else {
+    passwordError.classList.remove('hidden');
+    passwordInput.value = '';
+    passwordInput.focus();
+  }
+});
+
 const TILE = 40;
 
 // Mappa: 0 = pavimento libero, 1 = parete (corridoio ufficio), 2 = scrivania
@@ -813,7 +844,15 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
 }
 
-loadQuizData().then(() => {
-  updateScoreDisplay();
-  gameLoop();
-});
+function startGame() {
+  loadQuizData().then(() => {
+    updateScoreDisplay();
+    gameLoop();
+  });
+}
+
+if (sessionStorage.getItem(AUTH_STORAGE_KEY) === '1') {
+  unlockGame();
+} else {
+  passwordInput.focus();
+}

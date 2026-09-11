@@ -88,6 +88,69 @@ canvas {
   z-index: 10;
 }
 
+#password-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+#password-box {
+  background: #232a33;
+  border: 2px solid #4dabf7;
+  border-radius: 12px;
+  padding: 28px 32px;
+  max-width: 340px;
+  width: 90%;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+#password-box h2 {
+  color: #74c0fc;
+  margin-top: 0;
+}
+
+#password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+#password-input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #4dabf7;
+  background: #1a2028;
+  color: #e9ecef;
+  font-size: 1rem;
+}
+
+#password-form button {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #4dabf7;
+  color: #1a2028;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+#password-form button:hover {
+  background: #74c0fc;
+}
+
+#password-error {
+  color: #ff6b6b;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
 #quiz-box, #end-box, #level-box, #doc-box {
   background: #232a33;
   border: 2px solid #4dabf7;

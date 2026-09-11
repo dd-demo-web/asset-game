@@ -8,7 +8,20 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="game-container">
+  <!-- Password gate: blocca l'accesso al gioco finché non viene inserita la password corretta -->
+  <div id="password-modal">
+    <div id="password-box">
+      <h2>Accesso riservato</h2>
+      <p>Inserisci la password per accedere al gioco.</p>
+      <form id="password-form">
+        <input type="password" id="password-input" placeholder="Password" autocomplete="off" autofocus>
+        <button type="submit">Entra</button>
+      </form>
+      <p id="password-error" class="hidden">Password errata, riprova.</p>
+    </div>
+  </div>
+
+  <div id="game-container" class="hidden">
     <h1 id="title">Asset Quiz</h1>
     <div id="hud">
       <span id="score-display">Punteggio: 0</span>
