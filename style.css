@@ -78,7 +78,7 @@ canvas {
   display: none !important;
 }
 
-#quiz-modal, #end-modal, #level-modal {
+#quiz-modal, #end-modal, #level-modal, #doc-modal {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.7);
@@ -88,7 +88,7 @@ canvas {
   z-index: 10;
 }
 
-#quiz-box, #end-box, #level-box {
+#quiz-box, #end-box, #level-box, #doc-box {
   background: #232a33;
   border: 2px solid #4dabf7;
   border-radius: 12px;
@@ -99,7 +99,7 @@ canvas {
   position: relative;
 }
 
-#quiz-close-btn {
+#quiz-close-btn, #doc-close-btn {
   position: absolute;
   top: 8px;
   right: 10px;
@@ -114,9 +114,23 @@ canvas {
   transition: background 0.15s, color 0.15s;
 }
 
-#quiz-close-btn:hover {
+#quiz-close-btn:hover, #doc-close-btn:hover {
   background: rgba(255,255,255,0.08);
   color: #fff;
+}
+
+#doc-title {
+  color: #74c0fc;
+  margin: 0 0 12px 0;
+  padding-right: 24px;
+}
+
+#doc-body {
+  max-height: 55vh;
+  overflow-y: auto;
+  line-height: 1.5;
+  white-space: pre-line;
+  color: #e9ecef;
 }
 
 #npc-name {

@@ -16,8 +16,8 @@
       <span id="topic-display"></span>
     </div>
     <canvas id="game" width="800" height="500"></canvas>
-    <p id="hint-keyboard" class="hint">Muoviti con le frecce o WASD e premi <b>E</b> per parlare.</p>
-    <p id="hint-touch" class="hint">Tocca lo schermo per spostarti e tocca un personaggio per raggiungerlo e iniziare il quiz.</p>
+    <p id="hint-keyboard" class="hint">Muoviti con le frecce o WASD, premi <b>E</b> per parlare/leggere.</p>
+    <p id="hint-touch" class="hint">Tocca lo schermo per spostarti e tocca un personaggio o una bacheca per raggiungerlo.</p>
   </div>
 
   <!-- Dialog / Question modal -->
@@ -28,6 +28,15 @@
       <p id="question-text"></p>
       <div id="answers"></div>
       <p id="feedback"></p>
+    </div>
+  </div>
+
+  <!-- Documentation board modal (approfondimenti) -->
+  <div id="doc-modal" class="hidden">
+    <div id="doc-box">
+      <button id="doc-close-btn" aria-label="Chiudi la documentazione" title="Chiudi">&times;</button>
+      <h2 id="doc-title"></h2>
+      <p id="doc-body"></p>
     </div>
   </div>
 

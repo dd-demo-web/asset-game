@@ -263,6 +263,35 @@
             }
           ]
         }
+      ],
+      "infoBoards": [
+        {
+          "id": "board-1-12-9",
+          "title": "Asset per Adobe Experience Manager",
+          "body": "Su Adobe Experience Manager (AEM) un Asset è tipicamente un componente o template riutilizzabile: un blocco editoriale, un layout di pagina o un componente per il DAM (Digital Asset Management) pensato per essere riusato su più siti e brand. Un buon Asset AEM è configurabile via dialog (campi editabili) senza dover toccare il codice, così i content editor possono adattarlo da soli.",
+          "position": {
+            "col": 12,
+            "row": 9
+          }
+        },
+        {
+          "id": "board-1-13-9",
+          "title": "Asset per Salesforce CRM",
+          "body": "Su Salesforce, un Asset può essere un pacchetto gestito (managed package), un flow riutilizzabile o un set di oggetti/automazioni pensati per un caso d'uso ricorrente (es. gestione lead, onboarding cliente). L'obiettivo è distribuire lo stesso Asset su più org Salesforce di clienti diversi, con configurazione tramite Custom Metadata invece di codice duplicato.",
+          "position": {
+            "col": 13,
+            "row": 9
+          }
+        },
+        {
+          "id": "board-1-14-9",
+          "title": "Asset pensati per industry specifiche",
+          "body": "Alcuni Asset non sono generici ma nascono per un settore preciso: energy, luxury, automotive, retail, banking. In questi casi l'Asset incorpora già i processi e i dati tipici del settore (es. gestione concessionari per l'automotive, gestione impianti per l'energy), riducendo il lavoro di personalizzazione rispetto a un Asset generico.",
+          "position": {
+            "col": 14,
+            "row": 9
+          }
+        }
       ]
     },
     {
@@ -527,6 +556,35 @@
             }
           ]
         }
+      ],
+      "infoBoards": [
+        {
+          "id": "board-2-12-9",
+          "title": "AEM per il settore Luxury",
+          "body": "Nel settore Luxury, gli Asset AEM devono garantire un'esperienza editoriale curatissima: componenti per storytelling visivo, gallerie ad alta risoluzione e template multi-lingua/multi-brand. Un Asset ben progettato per il luxury separa il layout (identico per tutti i brand) dal tema grafico (personalizzabile per ogni maison), così la stessa base di codice serve più brand del gruppo.",
+          "position": {
+            "col": 12,
+            "row": 9
+          }
+        },
+        {
+          "id": "board-2-13-9",
+          "title": "Salesforce CRM per il settore Automotive",
+          "body": "Nell'Automotive, un Asset Salesforce tipico gestisce il funnel concessionario-cliente: lead da showroom, test drive, gestione ordini e post-vendita. L'Asset va progettato per adattarsi a reti di concessionari diverse (multi-dealer), con configurazione per paese, marca e canale di vendita, senza duplicare la logica per ogni concessionario.",
+          "position": {
+            "col": 13,
+            "row": 9
+          }
+        },
+        {
+          "id": "board-2-14-9",
+          "title": "Asset trasversali per più industry",
+          "body": "Alcuni Asset nascono in un'industry ma si rivelano riutilizzabili anche altrove: un Asset di gestione impianti pensato per l'Energy può essere adattato al Manufacturing, uno di gestione ordini pensato per l'Automotive può servire al Retail. Riconoscere questi pattern trasversali aumenta il ritorno sull'investimento fatto per costruire l'Asset.",
+          "position": {
+            "col": 14,
+            "row": 9
+          }
+        }
       ]
     },
     {
@@ -790,6 +848,35 @@
               "points": 20
             }
           ]
+        }
+      ],
+      "infoBoards": [
+        {
+          "id": "board-3-16-7",
+          "title": "Governance degli Asset AEM enterprise",
+          "body": "Su scala enterprise, gli Asset AEM richiedono un catalogo componenti versionato, linee guida di accessibilità e performance, e un processo di certificazione prima che un componente venga pubblicato nel catalogo condiviso multi-brand. Serve anche una strategia di aggiornamento: quando un Asset AEM cambia, tutti i siti che lo usano vanno testati prima del rilascio.",
+          "position": {
+            "col": 16,
+            "row": 7
+          }
+        },
+        {
+          "id": "board-3-17-7",
+          "title": "Governance degli Asset Salesforce per l'Energy",
+          "body": "Nel settore Energy, gli Asset Salesforce spesso gestiscono dati critici (impianti, contatori, contratti regolamentati). La governance deve includere controlli di conformità normativa, un piano di versionamento dei managed package e un owner tecnico responsabile per ogni Asset, per garantire che gli aggiornamenti non violino vincoli regolatori dei singoli mercati.",
+          "position": {
+            "col": 17,
+            "row": 7
+          }
+        },
+        {
+          "id": "board-3-18-7",
+          "title": "Strategia multi-industry: Automotive, Luxury, Energy e altre",
+          "body": "Un portafoglio Asset maturo copre più industry con strategie diverse: nell'Automotive si punta su scalabilità multi-dealer, nel Luxury su personalizzazione del brand, nell'Energy su conformità normativa. Il team di governance deve bilanciare investimenti condivisi (core comune) e specializzazioni verticali, decidendo quando conviene creare un nuovo Asset dedicato a un'industry e quando invece estendere un Asset già esistente.",
+          "position": {
+            "col": 18,
+            "row": 7
+          }
         }
       ]
     }

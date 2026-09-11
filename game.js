@@ -23,10 +23,10 @@ const mapLayouts = [
     "10000001000000300001",
     "10022001000330000001",
     "10000000000000000001",
-    "10000110000011000001",
-    "10003000000000200001",
-    "10000000110000000001",
-    "10033000000000022001",
+    "10000110000011100001",
+    "10003000000144410001",
+    "10000000110100010001",
+    "10033000000010122001",
     "10000000000000000001",
     "11111111111111111111"
   ],
@@ -40,10 +40,10 @@ const mapLayouts = [
     "10000000000000000001",
     "10033000000000330001",
     "10000000000000000001",
-    "11011110111011101101",
-    "10000000000000000001",
-    "10022000000000022001",
-    "10000000000000000001",
+    "11011110111010101101",
+    "10000000000100010001",
+    "10022000000144412001",
+    "10000000000011100001",
     "11111111111111111111"
   ],
   // Livello 3: piano dirigenziale con uffici privati
@@ -53,10 +53,10 @@ const mapLayouts = [
     "10330011111100330001",
     "10000010000010000001",
     "10022010220010022001",
+    "10000010000010001111",
+    "10000011000110014441",
     "10000010000010000001",
-    "10000011000110000001",
-    "10000010000010000001",
-    "10033010330010033001",
+    "10033010330010031111",
     "10000010000010000001",
     "10000011111100000001",
     "10000000000000000001",
@@ -98,7 +98,7 @@ function isBlocked(col, row) {
   const rowStr = currentMapLayout[row];
   if (col < 0 || col >= rowStr.length) return true;
   const c = rowStr[col];
-  return c === '1' || c === '2' || c === '3';
+  return c === '1' || c === '2' || c === '3' || c === '4';
 }
 
 function drawMap() {
@@ -152,6 +152,28 @@ function drawMap() {
           ctx.fillStyle = theme.drawerHandle;
           ctx.fillRect(x + TILE / 2 - 5, drawerY + ((TILE - 12) / 3 - 3) / 2 - 1, 10, 2);
         }
+      } else if (tile === '4') {
+        // bacheca informativa con documenti di approfondimento appuntati
+        ctx.fillStyle = theme.cabinetStroke;
+        ctx.fillRect(x + 2, y + 2, TILE - 4, TILE - 8);
+        ctx.fillStyle = theme.deskBase;
+        ctx.fillRect(x + 5, y + 5, TILE - 10, TILE - 14);
+        // fogli appuntati
+        const sheetColors = ['#f1f3f5', '#e9ecef'];
+        for (let i = 0; i < 2; i++) {
+          const sx = x + 7 + i * (TILE / 2 - 6);
+          const sy = y + 8;
+          ctx.fillStyle = sheetColors[i % sheetColors.length];
+          ctx.fillRect(sx, sy, TILE / 2 - 10, TILE / 2 - 6);
+          ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+          ctx.strokeRect(sx, sy, TILE / 2 - 10, TILE / 2 - 6);
+          ctx.fillStyle = 'rgba(0,0,0,0.35)';
+          for (let l = 0; l < 3; l++) {
+            ctx.fillRect(sx + 2, sy + 3 + l * 4, TILE / 2 - 14, 1.5);
+          }
+        }
+        ctx.fillStyle = theme.monitorScreen;
+        ctx.fillRect(x + TILE / 2 - 6, y + TILE - 14, 12, 6);
       }
     }
   }
@@ -189,28 +211,38 @@ window.addEventListener('keyup', (e) => {
 
 // ---------------- Controlli touch/mouse (mobile) ----------------
 // Tap sul pavimento: il personaggio cammina verso il punto toccato.
-// Tap su un personaggio: il player cammina verso di lui e, solo quando lo
-// raggiunge davvero, si apre automaticamente il dialogo delle domande.
+// Tap su un personaggio o su una bacheca: il player cammina verso di esso e,
+// solo quando lo raggiunge davvero, si apre automaticamente il dialogo/la lettura.
 let moveTarget = null;
-let pendingInteractNpc = null;
-const TAP_NPC_PADDING = 12;
+let pendingInteractTarget = null; // { type: 'npc' | 'board', entity }
+const TAP_TARGET_PADDING = 12;
 
-function findNpcAtPoint(x, y) {
+function findInteractableAtPoint(x, y) {
   for (const n of npcs) {
     if (
-      x >= n.x - TAP_NPC_PADDING &&
-      x <= n.x + n.size + TAP_NPC_PADDING &&
-      y >= n.y - TAP_NPC_PADDING &&
-      y <= n.y + n.size + TAP_NPC_PADDING
+      x >= n.x - TAP_TARGET_PADDING &&
+      x <= n.x + n.size + TAP_TARGET_PADDING &&
+      y >= n.y - TAP_TARGET_PADDING &&
+      y <= n.y + n.size + TAP_TARGET_PADDING
     ) {
-      return n;
+      return { type: 'npc', entity: n };
+    }
+  }
+  for (const b of infoBoards) {
+    if (
+      x >= b.x - TAP_TARGET_PADDING &&
+      x <= b.x + b.size + TAP_TARGET_PADDING &&
+      y >= b.y - TAP_TARGET_PADDING &&
+      y <= b.y + b.size + TAP_TARGET_PADDING
+    ) {
+      return { type: 'board', entity: b };
     }
   }
   return null;
 }
 
 function handleCanvasPointer(evt) {
-  if (quizActive) return;
+  if (quizActive || docActive) return;
   evt.preventDefault();
 
   const rect = canvas.getBoundingClientRect();
@@ -220,15 +252,15 @@ function handleCanvasPointer(evt) {
   const x = (point.clientX - rect.left) * scaleX;
   const y = (point.clientY - rect.top) * scaleY;
 
-  const tappedNpc = findNpcAtPoint(x, y);
-  if (tappedNpc) {
-    pendingInteractNpc = tappedNpc;
+  const tapped = findInteractableAtPoint(x, y);
+  if (tapped) {
+    pendingInteractTarget = tapped;
     moveTarget = {
-      x: tappedNpc.x + tappedNpc.size / 2 - player.size / 2,
-      y: tappedNpc.y + tappedNpc.size / 2 - player.size / 2
+      x: tapped.entity.x + tapped.entity.size / 2 - player.size / 2,
+      y: tapped.entity.y + tapped.entity.size / 2 - player.size / 2
     };
   } else {
-    pendingInteractNpc = null;
+    pendingInteractTarget = null;
     moveTarget = { x: x - player.size / 2, y: y - player.size / 2 };
   }
 }
@@ -252,7 +284,7 @@ function canMoveTo(x, y, size) {
 }
 
 function updatePlayer() {
-  if (quizActive) { player.moving = false; return; } // niente movimento durante il quiz
+  if (quizActive || docActive) { player.moving = false; return; } // niente movimento durante dialoghi/lettura
   let dx = 0, dy = 0;
   if (keys['arrowup'] || keys['w']) { dy -= player.speed; player.dir = 'up'; }
   if (keys['arrowdown'] || keys['s']) { dy += player.speed; player.dir = 'down'; }
@@ -263,9 +295,9 @@ function updatePlayer() {
   if (usingKeyboard) {
     // l'input da tastiera annulla un eventuale spostamento avviato con il tap
     moveTarget = null;
-    pendingInteractNpc = null;
+    pendingInteractTarget = null;
   } else if (moveTarget) {
-    // movimento verso il punto/personaggio toccato su schermo (touch/mouse)
+    // movimento verso il punto/personaggio/bacheca toccato su schermo (touch/mouse)
     const targetDx = moveTarget.x - player.x;
     const targetDy = moveTarget.y - player.y;
     const dist = Math.hypot(targetDx, targetDy);
@@ -292,14 +324,18 @@ function updatePlayer() {
     player.y += dy;
   }
 
-  // se il personaggio toccato è stato raggiunto, apre automaticamente il
-  // dialogo delle domande (le domande compaiono solo all'arrivo, non al tap)
-  if (pendingInteractNpc && distanceBetween(player, pendingInteractNpc) <= INTERACT_RANGE) {
-    const target = pendingInteractNpc;
-    pendingInteractNpc = null;
+  // se il personaggio/bacheca toccato è stato raggiunto, si apre automaticamente
+  // il dialogo/la lettura (compare solo all'arrivo, non al momento del tap)
+  if (pendingInteractTarget && distanceBetween(player, pendingInteractTarget.entity) <= INTERACT_RANGE) {
+    const target = pendingInteractTarget;
+    pendingInteractTarget = null;
     moveTarget = null;
-    nearestNpc = target;
-    tryInteract();
+    if (target.type === 'npc') {
+      nearestNpc = target.entity;
+      tryInteract();
+    } else {
+      openDocBoard(target.entity);
+    }
   }
 }
 
@@ -419,6 +455,9 @@ function distanceBetween(a, b) {
 
 const INTERACT_RANGE = TILE * 1.3;
 let nearestNpc = null;
+let nearestBoard = null;
+let infoBoards = [];
+let docActive = false;
 
 function findNearestNpcInRange() {
   let closest = null;
@@ -433,13 +472,33 @@ function findNearestNpcInRange() {
   return closest;
 }
 
+function findNearestBoardInRange() {
+  let closest = null;
+  let closestDist = Infinity;
+  for (const b of infoBoards) {
+    const d = distanceBetween(player, b);
+    if (d <= INTERACT_RANGE && d < closestDist) {
+      closest = b;
+      closestDist = d;
+    }
+  }
+  return closest;
+}
+
 function drawPrompt() {
-  if (!nearestNpc || quizActive) return;
-  ctx.fillStyle = '#ffd166';
-  ctx.font = 'bold 14px sans-serif';
-  ctx.textAlign = 'center';
-  const msg = nearestNpc.questionQueue.length > 0 ? 'Premi E per parlare' : 'Completato ✓';
-  ctx.fillText(msg, nearestNpc.x + nearestNpc.size / 2, nearestNpc.y - 20);
+  if (quizActive || docActive) return;
+  if (nearestNpc) {
+    ctx.fillStyle = '#ffd166';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    const msg = nearestNpc.questionQueue.length > 0 ? 'Premi E per parlare' : 'Completato ✓';
+    ctx.fillText(msg, nearestNpc.x + nearestNpc.size / 2, nearestNpc.y - 20);
+  } else if (nearestBoard) {
+    ctx.fillStyle = '#ffd166';
+    ctx.font = 'bold 14px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Premi E per leggere', nearestBoard.x + nearestBoard.size / 2, nearestBoard.y - 10);
+  }
 }
 
 // ---------------- Quiz logic ----------------
@@ -467,6 +526,12 @@ const levelModal = document.getElementById('level-modal');
 const levelCompleteTextEl = document.getElementById('level-complete-text');
 const nextLevelBtn = document.getElementById('next-level-btn');
 const quizCloseBtn = document.getElementById('quiz-close-btn');
+const docModal = document.getElementById('doc-modal');
+const docTitleEl = document.getElementById('doc-title');
+const docBodyEl = document.getElementById('doc-body');
+const docCloseBtn = document.getElementById('doc-close-btn');
+docCloseBtn.addEventListener('click', closeDocModal);
+
 
 // Costruisce l'elenco degli NPC (e delle relative domande) a partire dai
 // dati configurati per un determinato livello in questions.json.
@@ -497,6 +562,22 @@ function buildNpcsForLevel(levelCfg) {
   });
 }
 
+// Costruisce l'elenco delle bacheche informative (documentazione di
+// approfondimento) a partire dai dati configurati per il livello corrente.
+function buildInfoBoardsForLevel(levelCfg) {
+  const boards = levelCfg.infoBoards || [];
+  return boards.map((cfg) => ({
+    id: cfg.id,
+    title: cfg.title,
+    body: cfg.body,
+    col: cfg.position.col,
+    row: cfg.position.row,
+    size: TILE - 8,
+    x: cfg.position.col * TILE,
+    y: cfg.position.row * TILE
+  }));
+}
+
 function updateHud() {
   const levelCfg = quizData.levels[currentLevelIndex];
   levelDisplay.textContent = `Livello ${currentLevelIndex + 1}/${quizData.levels.length} · ${levelCfg.name.replace(/^Livello \d+ - /, '')}`;
@@ -508,12 +589,13 @@ function loadLevel(levelIndex) {
   currentMapLayout = mapLayouts[levelIndex];
   currentTheme = officeThemes[levelIndex];
   npcs = buildNpcsForLevel(quizData.levels[currentLevelIndex]);
+  infoBoards = buildInfoBoardsForLevel(quizData.levels[currentLevelIndex]);
   player.col = 1;
   player.row = 1;
   player.x = TILE * 1;
   player.y = TILE * 1;
   moveTarget = null;
-  pendingInteractNpc = null;
+  pendingInteractTarget = null;
   updateHud();
 }
 
@@ -532,15 +614,33 @@ function isLastLevel() {
 }
 
 function tryInteract() {
-  if (quizActive) return;
+  if (quizActive || docActive) return;
+  const board = findNearestBoardInRange();
   const target = findNearestNpcInRange();
-  if (!target) return;
+  if (!target) {
+    if (board) openDocBoard(board);
+    return;
+  }
 
   if (target.questionQueue.length === 0) {
     if (allNpcsCompleted()) onLevelFinished();
+    else if (board) openDocBoard(board);
     return;
   }
   openQuestion(target);
+}
+
+function openDocBoard(board) {
+  if (quizActive || docActive) return;
+  docActive = true;
+  docModal.classList.remove('hidden');
+  docTitleEl.textContent = board.title;
+  docBodyEl.textContent = board.body;
+}
+
+function closeDocModal() {
+  docActive = false;
+  docModal.classList.add('hidden');
 }
 
 function openQuestion(npcTarget) {
@@ -686,7 +786,11 @@ restartBtn.addEventListener('click', () => {
 // ---------------- Game loop ----------------
 function gameLoop() {
   updatePlayer();
-  nearestNpc = quizActive ? nearestNpc : findNearestNpcInRange();
+  const dialogOpen = quizActive || docActive;
+  if (!dialogOpen) {
+    nearestNpc = findNearestNpcInRange();
+    nearestBoard = nearestNpc ? null : findNearestBoardInRange();
+  }
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawMap();
