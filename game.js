@@ -10,20 +10,21 @@ const TILE = 40;
 const COLS = canvas.width / TILE;
 const ROWS = canvas.height / TILE;
 
-// Mappa: 0 = pavimento libero, 1 = parete, 2 = pianta (ostacolo decorativo)
+// Mappa: 0 = pavimento libero, 1 = parete (corridoio ufficio), 2 = scrivania
+// (ostacolo decorativo), 3 = armadio da ufficio (ostacolo decorativo)
 // (righe x colonne) - 20 colonne x 12.5 righe circa, adattata a 800x500
 const mapLayout = [
   "11111111111111111111",
   "10000000000000000001",
-  "10022000000000220001",
+  "10033000000000220001",
   "10000001111000000001",
-  "10000001000000200001",
-  "10022001000220000001",
+  "10000001000000300001",
+  "10022001000330000001",
   "10000000000000000001",
   "10000110000011000001",
-  "10002000000000200001",
+  "10003000000000200001",
   "10000000110000000001",
-  "10022000000000022001",
+  "10033000000000022001",
   "10000000000000000001",
   "11111111111111111111"
 ];
@@ -33,7 +34,7 @@ function isBlocked(col, row) {
   const rowStr = mapLayout[row];
   if (col < 0 || col >= rowStr.length) return true;
   const c = rowStr[col];
-  return c === '1' || c === '2';
+  return c === '1' || c === '2' || c === '3';
 }
 
 function drawMap() {
@@ -42,26 +43,50 @@ function drawMap() {
       const tile = mapLayout[row][col];
       const x = col * TILE;
       const y = row * TILE;
+
+      // pavimento dell'ufficio (piastrelle chiare) sotto ogni elemento
+      ctx.fillStyle = (row + col) % 2 === 0 ? '#d9d4c8' : '#cfc9bb';
+      ctx.fillRect(x, y, TILE, TILE);
+      ctx.strokeStyle = 'rgba(0,0,0,0.06)';
+      ctx.strokeRect(x, y, TILE, TILE);
+
       if (tile === '1') {
-        ctx.fillStyle = '#4a3b2a';
+        // parete/corridoio ufficio
+        ctx.fillStyle = '#b8bdc2';
         ctx.fillRect(x, y, TILE, TILE);
-        ctx.strokeStyle = '#2e2318';
+        ctx.fillStyle = '#e9ebee';
+        ctx.fillRect(x, y, TILE, TILE / 4);
+        ctx.strokeStyle = '#8a9096';
         ctx.strokeRect(x, y, TILE, TILE);
       } else if (tile === '2') {
-        ctx.fillStyle = '#2e5339';
-        ctx.fillRect(x, y, TILE, TILE);
-        // pianta stilizzata
-        ctx.fillStyle = '#3f9142';
-        ctx.beginPath();
-        ctx.arc(x + TILE / 2, y + TILE / 2, TILE / 2.6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = '#256b2b';
-        ctx.beginPath();
-        ctx.arc(x + TILE / 2 - 6, y + TILE / 2 - 4, TILE / 5, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.fillStyle = '#2e5339';
-        ctx.fillRect(x, y, TILE, TILE);
+        // scrivania da ufficio
+        ctx.fillStyle = '#8a5a35';
+        ctx.fillRect(x + 3, y + TILE / 2 - 4, TILE - 6, TILE / 2 - 4);
+        ctx.fillStyle = '#a9713f';
+        ctx.fillRect(x + 3, y + TILE / 2 - 8, TILE - 6, 6);
+        // gambe scrivania
+        ctx.fillStyle = '#5c3b21';
+        ctx.fillRect(x + 5, y + TILE - 6, 4, 6);
+        ctx.fillRect(x + TILE - 9, y + TILE - 6, 4, 6);
+        // monitor
+        ctx.fillStyle = '#2b2b2b';
+        ctx.fillRect(x + TILE / 2 - 7, y + TILE / 2 - 20, 14, 10);
+        ctx.fillStyle = '#4dabf7';
+        ctx.fillRect(x + TILE / 2 - 5, y + TILE / 2 - 18, 10, 6);
+      } else if (tile === '3') {
+        // armadio da ufficio (cassettiera/schedario)
+        ctx.fillStyle = '#6b7280';
+        ctx.fillRect(x + 4, y + 2, TILE - 8, TILE - 6);
+        ctx.strokeStyle = '#454b54';
+        ctx.strokeRect(x + 4, y + 2, TILE - 8, TILE - 6);
+        // cassetti
+        for (let i = 0; i < 3; i++) {
+          const drawerY = y + 6 + i * ((TILE - 12) / 3);
+          ctx.fillStyle = '#9aa1ab';
+          ctx.fillRect(x + 7, drawerY, TILE - 14, (TILE - 12) / 3 - 3);
+          ctx.fillStyle = '#454b54';
+          ctx.fillRect(x + TILE / 2 - 5, drawerY + ((TILE - 12) / 3 - 3) / 2 - 1, 10, 2);
+        }
       }
     }
   }
