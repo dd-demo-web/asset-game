@@ -187,6 +187,54 @@ window.addEventListener('keyup', (e) => {
   keys[e.key.toLowerCase()] = false;
 });
 
+// ---------------- Controlli touch/mouse (mobile) ----------------
+// Tap sul pavimento: il personaggio cammina verso il punto toccato.
+// Tap su un personaggio: il player cammina verso di lui e, solo quando lo
+// raggiunge davvero, si apre automaticamente il dialogo delle domande.
+let moveTarget = null;
+let pendingInteractNpc = null;
+const TAP_NPC_PADDING = 12;
+
+function findNpcAtPoint(x, y) {
+  for (const n of npcs) {
+    if (
+      x >= n.x - TAP_NPC_PADDING &&
+      x <= n.x + n.size + TAP_NPC_PADDING &&
+      y >= n.y - TAP_NPC_PADDING &&
+      y <= n.y + n.size + TAP_NPC_PADDING
+    ) {
+      return n;
+    }
+  }
+  return null;
+}
+
+function handleCanvasPointer(evt) {
+  if (quizActive) return;
+  evt.preventDefault();
+
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  const point = evt.touches ? evt.touches[0] : evt;
+  const x = (point.clientX - rect.left) * scaleX;
+  const y = (point.clientY - rect.top) * scaleY;
+
+  const tappedNpc = findNpcAtPoint(x, y);
+  if (tappedNpc) {
+    pendingInteractNpc = tappedNpc;
+    moveTarget = {
+      x: tappedNpc.x + tappedNpc.size / 2 - player.size / 2,
+      y: tappedNpc.y + tappedNpc.size / 2 - player.size / 2
+    };
+  } else {
+    pendingInteractNpc = null;
+    moveTarget = { x: x - player.size / 2, y: y - player.size / 2 };
+  }
+}
+
+canvas.addEventListener('pointerdown', handleCanvasPointer);
+
 function canMoveTo(x, y, size) {
   // controlla i 4 angoli del bounding box del player rispetto alla griglia
   const corners = [
@@ -211,6 +259,29 @@ function updatePlayer() {
   if (keys['arrowleft'] || keys['a']) { dx -= player.speed; player.dir = 'left'; }
   if (keys['arrowright'] || keys['d']) { dx += player.speed; player.dir = 'right'; }
 
+  const usingKeyboard = dx !== 0 || dy !== 0;
+  if (usingKeyboard) {
+    // l'input da tastiera annulla un eventuale spostamento avviato con il tap
+    moveTarget = null;
+    pendingInteractNpc = null;
+  } else if (moveTarget) {
+    // movimento verso il punto/personaggio toccato su schermo (touch/mouse)
+    const targetDx = moveTarget.x - player.x;
+    const targetDy = moveTarget.y - player.y;
+    const dist = Math.hypot(targetDx, targetDy);
+    if (dist <= player.speed) {
+      player.x = moveTarget.x;
+      player.y = moveTarget.y;
+      moveTarget = null;
+      dx = 0;
+      dy = 0;
+    } else {
+      dx = (targetDx / dist) * player.speed;
+      dy = (targetDy / dist) * player.speed;
+      player.dir = Math.abs(targetDx) > Math.abs(targetDy) ? (targetDx > 0 ? 'right' : 'left') : (targetDy > 0 ? 'down' : 'up');
+    }
+  }
+
   player.moving = dx !== 0 || dy !== 0;
   if (player.moving) player.walkFrame += 0.2;
 
@@ -219,6 +290,16 @@ function updatePlayer() {
   }
   if (dy !== 0 && canMoveTo(player.x, player.y + dy, player.size)) {
     player.y += dy;
+  }
+
+  // se il personaggio toccato è stato raggiunto, apre automaticamente il
+  // dialogo delle domande (le domande compaiono solo all'arrivo, non al tap)
+  if (pendingInteractNpc && distanceBetween(player, pendingInteractNpc) <= INTERACT_RANGE) {
+    const target = pendingInteractNpc;
+    pendingInteractNpc = null;
+    moveTarget = null;
+    nearestNpc = target;
+    tryInteract();
   }
 }
 
@@ -366,6 +447,8 @@ let quizData = null;
 let currentLevelIndex = 0;
 let currentNpc = null;
 let currentQuestion = null;
+let answeredCurrent = false;
+let answerTimeoutId = null;
 let score = 0;
 let quizActive = false;
 
@@ -383,6 +466,7 @@ const restartBtn = document.getElementById('restart-btn');
 const levelModal = document.getElementById('level-modal');
 const levelCompleteTextEl = document.getElementById('level-complete-text');
 const nextLevelBtn = document.getElementById('next-level-btn');
+const quizCloseBtn = document.getElementById('quiz-close-btn');
 
 // Costruisce l'elenco degli NPC (e delle relative domande) a partire dai
 // dati configurati per un determinato livello in questions.json.
@@ -428,6 +512,8 @@ function loadLevel(levelIndex) {
   player.row = 1;
   player.x = TILE * 1;
   player.y = TILE * 1;
+  moveTarget = null;
+  pendingInteractNpc = null;
   updateHud();
 }
 
@@ -460,6 +546,7 @@ function tryInteract() {
 function openQuestion(npcTarget) {
   currentNpc = npcTarget;
   currentQuestion = npcTarget.questionQueue.shift();
+  answeredCurrent = false;
   quizActive = true;
   modal.classList.remove('hidden');
   npcNameEl.textContent = `${npcTarget.name} (${npcTarget.topic}):`;
@@ -481,6 +568,7 @@ function handleAnswer(btn, answer) {
   allBtns.forEach((b) => (b.disabled = true));
 
   currentNpc.answeredIds.add(currentQuestion.id);
+  answeredCurrent = true;
 
   if (answer.correct) {
     btn.classList.add('answer-correct');
@@ -501,16 +589,50 @@ function handleAnswer(btn, answer) {
 
   updateScoreDisplay();
 
-  setTimeout(() => {
-    modal.classList.add('hidden');
-    quizActive = false;
-    currentQuestion = null;
-    currentNpc = null;
-    if (allNpcsCompleted()) {
-      setTimeout(onLevelFinished, 300);
+  const npcTarget = currentNpc;
+  answerTimeoutId = setTimeout(() => {
+    answerTimeoutId = null;
+    // Se il personaggio ha ancora domande, resta in dialogo con lui invece
+    // di chiudere la finestra: si passa direttamente alla domanda successiva.
+    if (npcTarget.questionQueue.length > 0) {
+      openQuestion(npcTarget);
+    } else {
+      finishNpcDialog();
     }
   }, 1400);
 }
+
+// Chiude definitivamente il dialogo quando il personaggio corrente ha
+// esaurito tutte le sue domande, e valuta se il livello è concluso.
+function finishNpcDialog() {
+  modal.classList.add('hidden');
+  quizActive = false;
+  currentQuestion = null;
+  currentNpc = null;
+  answeredCurrent = false;
+  if (allNpcsCompleted()) {
+    setTimeout(onLevelFinished, 300);
+  }
+}
+
+// Chiusura manuale della dialog tramite l'icona "×". Se la domanda attuale
+// non è ancora stata risposta, viene rimessa in coda per essere riproposta.
+function closeQuizModal() {
+  if (answerTimeoutId) {
+    clearTimeout(answerTimeoutId);
+    answerTimeoutId = null;
+  }
+  if (currentNpc && currentQuestion && !answeredCurrent) {
+    currentNpc.questionQueue.unshift(currentQuestion);
+  }
+  modal.classList.add('hidden');
+  quizActive = false;
+  currentQuestion = null;
+  currentNpc = null;
+  answeredCurrent = false;
+}
+
+quizCloseBtn.addEventListener('click', closeQuizModal);
 
 function updateScoreDisplay() {
   scoreDisplay.textContent = `Punteggio: ${score}`;

@@ -48,12 +48,30 @@ canvas {
   border: 4px solid #454b54;
   border-radius: 0 0 8px 8px;
   image-rendering: pixelated;
+  max-width: 100%;
+  height: auto;
+  touch-action: none;
 }
 
-#hint {
+.hint {
   font-size: 0.85rem;
   color: #cfcfcf;
   margin-top: 8px;
+}
+
+/* Su desktop (mouse/trackpad) mostriamo solo i comandi da tastiera; su
+   dispositivi touch (mobile/tablet) mostriamo solo le istruzioni per il tap. */
+#hint-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  #hint-keyboard {
+    display: none;
+  }
+  #hint-touch {
+    display: block;
+  }
 }
 
 .hidden {
@@ -78,6 +96,27 @@ canvas {
   max-width: 480px;
   width: 90%;
   box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+#quiz-close-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #a5d8ff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+
+#quiz-close-btn:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
 }
 
 #npc-name {
